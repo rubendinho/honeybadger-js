@@ -5,13 +5,14 @@ const defaultOptions: Partial<Options> = {
   silent: false
 }
 
-export default createUnplugin<Options>((options = {}) => {
-  const { silent } = {...defaultOptions, ...options}
+export default createUnplugin<Options>((options) => {
+  const { silent, apiKey } = {...defaultOptions, ...options}
+
   return {
     name: 'unplugin-honeybadger',
-    async writeBundle() {
+    writeBundle: async () => {
       if (!silent) {
-        console.info('writeBundle hook called')
+        console.info(`writeBundle called, apiKey was ${apiKey}`)
       }
     },
   }
