@@ -1,3 +1,5 @@
+import type { HbPluginOptions } from "./types"
+
 export const MAX_RETRIES = 10
 export const DEFAULT_RETRIES = 3
 export const DEFAULT_ENDPOINT = 'https://api.honeybadger.io/v1/source_maps'
@@ -14,14 +16,14 @@ const required = [
   'assetsUrl'
 ]
 
-const defaultOptions = {
+const defaultOptions: Partial<HbPluginOptions> = {
   endpoint: DEFAULT_ENDPOINT, 
   retries: DEFAULT_RETRIES, 
   revision: DEFAULT_REVISION, 
   silent: DEFAULT_SILENT
 }
 
-export function cleanOptions(options) {
+export function cleanOptions(options: HbPluginOptions) {
   // Validate presence of required fields
   required.forEach(field => {
     if (!options || !options[field]) {

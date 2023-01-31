@@ -32,7 +32,7 @@ describe('Utils', () => {
       { FormData, fileFrom: fileFromMock }, 
       fetchMock
     );
-    utils = await import('../src/hbUtils.js')
+    utils = await import('../src/hbUtils')
   })
 
   afterEach(() => {
