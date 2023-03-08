@@ -4,7 +4,7 @@
 
 
 import { Platform, NativeModules, NativeEventEmitter } from 'react-native';
-
+import { Util } from '@honeybadger-io/core'
 
 const pkg = require('./package.json');
 const HoneybadgerNativeModule = NativeModules.HoneybadgerReactNative;
@@ -414,32 +414,34 @@ function backTraceFromJavaScriptError(err) {
 
 
 function framesFromJavaScriptErrorStack(stack) {
-  let frames = [];
-  let lines = stack.split('\n');
-  const javaScriptCoreRe = /^\s*(?:([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i;
-  for ( let i = 0 ; i < lines.length ; ++i ) {
-    const line = lines[i];
-    const parts = javaScriptCoreRe.exec(line);
-    if ( parts ) {
-      frames.push({
-        file: parts[3] || '',
-        method: parts[1] || '',
-        number: (parts[4] ? +parts[4] : ''),
-        column: (parts[5] ? +parts[5] : ''),
-      });
-    } else if ( line.indexOf('[native code]') !== -1 ) {
-      let parts = line.split('@');
-      if ( parts && parts.length === 2 ) {
-        frames.push({
-          file: parts[1],
-          method: parts[0],
-          number: '',
-          column: '',
-        });
-      }
-    }
-  }
-  return frames;
+  return Util.makeBacktrace(stack)
+  
+  // let frames = [];
+  // let lines = stack.split('\n');
+  // const javaScriptCoreRe = /^\s*(?:([^@]*)(?:\((.*?)\))?@)?(\S.*?):(\d+)(?::(\d+))?\s*$/i;
+  // for ( let i = 0 ; i < lines.length ; ++i ) {
+  //   const line = lines[i];
+  //   const parts = javaScriptCoreRe.exec(line);
+  //   if ( parts ) {
+  //     frames.push({
+  //       file: parts[3] || '',
+  //       method: parts[1] || '',
+  //       number: (parts[4] ? +parts[4] : ''),
+  //       column: (parts[5] ? +parts[5] : ''),
+  //     });
+  //   } else if ( line.indexOf('[native code]') !== -1 ) {
+  //     let parts = line.split('@');
+  //     if ( parts && parts.length === 2 ) {
+  //       frames.push({
+  //         file: parts[1],
+  //         method: parts[0],
+  //         number: '',
+  //         column: '',
+  //       });
+  //     }
+  //   }
+  // }
+  // return frames;
 }
 
 
